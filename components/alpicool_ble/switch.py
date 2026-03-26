@@ -1,7 +1,7 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome.components import switch
-from esphome.const import CONF_ID, ICON_LOCK
+from esphome.const import CONF_ID
 from . import alpicool_ble_ns, AlpicoolBLEClient, CONF_ALPICOOL_ID
 
 DEPENDENCIES = ["alpicool_ble"]
@@ -10,7 +10,7 @@ AlpicoolSwitch = alpicool_ble_ns.class_(
     "AlpicoolSwitch", switch.Switch, cg.Component
 )
 
-CONFIG_SCHEMA = switch.switch_schema(AlpicoolSwitch, icon=ICON_LOCK).extend(
+CONFIG_SCHEMA = switch.switch_schema(AlpicoolSwitch, icon="mdi:lock").extend(
     {
         cv.GenerateID(CONF_ALPICOOL_ID): cv.use_id(AlpicoolBLEClient),
     }
