@@ -12,13 +12,16 @@ AlpicoolClimate = alpicool_ble_ns.class_(
 
 CONF_ZONE = "zone"
 
-CONFIG_SCHEMA = climate.CLIMATE_SCHEMA.extend(
-    {
-        cv.GenerateID(): cv.declare_id(AlpicoolClimate),
-        cv.GenerateID(CONF_ALPICOOL_ID): cv.use_id(AlpicoolBLEClient),
-        cv.Optional(CONF_ZONE, default="left"): cv.one_of("left", "right", lower=True),
-    }
-).extend(cv.COMPONENT_SCHEMA)
+CONFIG_SCHEMA = (
+    climate.climate_schema(AlpicoolClimate)
+    .extend(
+        {
+            cv.GenerateID(CONF_ALPICOOL_ID): cv.use_id(AlpicoolBLEClient),
+            cv.Optional(CONF_ZONE, default="left"): cv.one_of("left", "right", lower=True),
+        }
+    )
+    .extend(cv.COMPONENT_SCHEMA)
+)
 
 
 async def to_code(config):
