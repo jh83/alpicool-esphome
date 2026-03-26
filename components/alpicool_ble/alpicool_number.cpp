@@ -23,6 +23,12 @@ void AlpicoolNumber::control(float value) {
     case AlpicoolNumberType::START_DELAY:
       desired.start_delay = (uint8_t)value;
       break;
+    case AlpicoolNumberType::TEMP_MAX:
+      desired.temp_max = (int8_t)value;
+      break;
+    case AlpicoolNumberType::TEMP_MIN:
+      desired.temp_min = (int8_t)value;
+      break;
   }
   this->hub_->send_set_command(desired);
   this->publish_state(value);
@@ -35,6 +41,12 @@ void AlpicoolNumber::on_alpicool_status(const AlpicoolStatus &s) {
       break;
     case AlpicoolNumberType::START_DELAY:
       this->publish_state((float)s.start_delay);
+      break;
+    case AlpicoolNumberType::TEMP_MAX:
+      this->publish_state((float)s.temp_max);
+      break;
+    case AlpicoolNumberType::TEMP_MIN:
+      this->publish_state((float)s.temp_min);
       break;
   }
 }

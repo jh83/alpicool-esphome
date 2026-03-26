@@ -114,6 +114,16 @@ number:
     name: "Fridge Compressor Start Delay"
     type: start_delay
 
+  - platform: alpicool_ble
+    alpicool_id: my_fridge
+    name: "Fridge Max Temperature"
+    type: temp_max
+
+  - platform: alpicool_ble
+    alpicool_id: my_fridge
+    name: "Fridge Min Temperature"
+    type: temp_min
+
 # ─── Select ───────────────────────────────────────────────────────────────────
 # Battery protection level: Low / Medium / High
 select:

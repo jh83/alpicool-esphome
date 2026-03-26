@@ -10,6 +10,8 @@ namespace alpicool_ble {
 enum class AlpicoolNumberType : uint8_t {
   HYSTERESIS,    // left_ret_diff: 1-10 °C
   START_DELAY,   // start_delay: 0-10 min
+  TEMP_MAX,      // temp_max: maximum selectable temperature
+  TEMP_MIN,      // temp_min: minimum selectable temperature
 };
 
 class AlpicoolNumber : public number::Number, public Component, public AlpicoolListener {

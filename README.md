@@ -18,6 +18,8 @@ Based on the reverse-engineered protocol from [Gruni22/alpicool_ha_ble](https://
 | Panel Lock | Switch | Locks/unlocks the physical control panel |
 | Hysteresis | Number | Compressor on/off temperature band (1–10 °C) |
 | Compressor Start Delay | Number | Delay before compressor starts (0–10 min) |
+| Max Temperature | Number | Maximum selectable target temperature (−20–20 °C) |
+| Min Temperature | Number | Minimum selectable target temperature (−20–20 °C) |
 | Battery Saver | Select | Battery protection level: Low / Medium / High |
 
 ---
@@ -158,6 +160,16 @@ number:
     alpicool_id: my_fridge
     name: "Fridge Start Delay"
     type: start_delay   # Range: 0–10 min
+
+  - platform: alpicool_ble
+    alpicool_id: my_fridge
+    name: "Fridge Max Temperature"
+    type: temp_max      # Range: −20–20 °C
+
+  - platform: alpicool_ble
+    alpicool_id: my_fridge
+    name: "Fridge Min Temperature"
+    type: temp_min      # Range: −20–20 °C
 ```
 
 ### Select
@@ -219,7 +231,7 @@ ESP32 connects to fridge
   → polls with QUERY every 30 s
 ```
 
-On reconnect, the BIND step is skipped for faster recovery.
+On reconnect (including after an ESP32 restart), the BIND step is skipped for faster recovery. The bind state is persisted to flash, so the component remembers a successful bind across reboots.
 
 ### Packet format
 
@@ -242,7 +254,7 @@ The checksum is the 16-bit sum of all preceding bytes. Temperature values are si
 - Some fridge firmware versions use a different service UUID. Try scanning with nRF Connect and check which service UUID the write/notify characteristics are under. Open an issue with the scan results.
 
 **BIND times out but fridge still works**
-- This is normal for some models. The component logs a warning and proceeds — it is not an error.
+- This is normal for some models. The component logs a warning and proceeds — it is not an error. The result is still saved to flash, so the bind timeout only happens once (on the very first connection after flashing).
 
 **Temperature shows −128 or unrealistic values**
 - Verify the fridge is powered on and not in standby

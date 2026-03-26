@@ -26,6 +26,20 @@ NUMBER_TYPES = {
         "step": 1.0,
         "unit": UNIT_MINUTE,
     },
+    "temp_max": {
+        "enum": AlpicoolNumberType.TEMP_MAX,
+        "min": -20.0,
+        "max": 20.0,
+        "step": 1.0,
+        "unit": UNIT_CELSIUS,
+    },
+    "temp_min": {
+        "enum": AlpicoolNumberType.TEMP_MIN,
+        "min": -20.0,
+        "max": 20.0,
+        "step": 1.0,
+        "unit": UNIT_CELSIUS,
+    },
 }
 
 CONFIG_SCHEMA = number.number_schema(AlpicoolNumber).extend(
