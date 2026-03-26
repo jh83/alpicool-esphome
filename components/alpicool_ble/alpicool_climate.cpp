@@ -15,7 +15,7 @@ void AlpicoolClimate::dump_config() {
 
 climate::ClimateTraits AlpicoolClimate::traits() {
   auto traits = climate::ClimateTraits();
-  traits.set_supports_current_temperature(true);
+  // Current temperature support is inferred from this->current_temperature being non-NAN
   traits.set_supported_modes({
       climate::CLIMATE_MODE_OFF,
       climate::CLIMATE_MODE_COOL,

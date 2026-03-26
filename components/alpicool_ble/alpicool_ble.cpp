@@ -1,6 +1,10 @@
 #include "alpicool_ble.h"
 #include "esphome/core/log.h"
 #include "esphome/core/hal.h"
+#include "esphome/components/esp32_ble_tracker/esp32_ble_tracker.h"
+
+// Make espbt:: accessible in this translation unit
+namespace espbt = esphome::esp32_ble_tracker;
 
 namespace esphome {
 namespace alpicool_ble {
