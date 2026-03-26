@@ -34,7 +34,7 @@ static const size_t RX_BUFFER_MAX = 64;
 
 void AlpicoolBLEClient::setup() {
   ESP_LOGCONFIG(TAG, "Setting up Alpicool BLE...");
-  this->bound_pref_ = global_preferences->make_preference<bool>(this->get_object_id_hash() ^ 0xA1C001U);
+  this->bound_pref_ = global_preferences->make_preference<bool>(0xA1C001U);
   bool stored = false;
   if (this->bound_pref_.load(&stored))
     this->was_previously_bound_ = stored;
