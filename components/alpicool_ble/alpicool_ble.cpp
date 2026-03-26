@@ -106,9 +106,9 @@ void AlpicoolBLEClient::gattc_event_handler(esp_gattc_cb_event_t event,
       ESP_LOGD(TAG, "Notify handle: 0x%04x", this->notify_handle_);
 
       // Find CCCD descriptor (UUID 0x2902) under the notify characteristic
-      for (auto &desc : notify_chr->descriptors) {
-        if (desc.uuid == espbt::ESPBTUUID::from_uint16(0x2902)) {
-          this->cccd_handle_ = desc.handle;
+      for (auto *desc : notify_chr->descriptors) {
+        if (desc->uuid == espbt::ESPBTUUID::from_uint16(0x2902)) {
+          this->cccd_handle_ = desc->handle;
           ESP_LOGD(TAG, "CCCD handle: 0x%04x", this->cccd_handle_);
           break;
         }
