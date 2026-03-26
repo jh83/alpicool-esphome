@@ -18,7 +18,6 @@ NUMBER_TYPES = {
         "max": 10.0,
         "step": 1.0,
         "unit": UNIT_CELSIUS,
-        "mode": number.NUMBER_MODES["BOX"],
     },
     "start_delay": {
         "enum": AlpicoolNumberType.START_DELAY,
@@ -26,7 +25,6 @@ NUMBER_TYPES = {
         "max": 10.0,
         "step": 1.0,
         "unit": UNIT_MINUTE,
-        "mode": number.NUMBER_MODES["BOX"],
     },
 }
 
@@ -51,7 +49,6 @@ async def to_code(config):
         max_value=type_info["max"],
         step=type_info["step"],
     )
-    cg.add(var.set_mode(type_info["mode"]))
 
     hub = await cg.get_variable(config[CONF_ALPICOOL_ID])
     cg.add(var.set_hub(hub))
