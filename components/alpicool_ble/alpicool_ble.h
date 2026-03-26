@@ -2,6 +2,7 @@
 
 #include "esphome/core/component.h"
 #include "esphome/core/log.h"
+#include "esphome/core/preferences.h"
 #include "esphome/components/ble_client/ble_client.h"
 
 #include <vector>
@@ -102,6 +103,7 @@ class AlpicoolBLEClient : public PollingComponent, public ble_client::BLEClientN
   uint16_t cccd_handle_{0};
   bool was_previously_bound_{false};
   uint32_t bind_start_ms_{0};
+  ESPPreferenceObject bound_pref_;
 };
 
 }  // namespace alpicool_ble

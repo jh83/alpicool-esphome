@@ -34,6 +34,10 @@ static const size_t RX_BUFFER_MAX = 64;
 
 void AlpicoolBLEClient::setup() {
   ESP_LOGCONFIG(TAG, "Setting up Alpicool BLE...");
+  this->bound_pref_ = global_preferences->make_preference<bool>(this->get_object_id_hash() ^ 0xA1C001U);
+  bool stored = false;
+  if (this->bound_pref_.load(&stored))
+    this->was_previously_bound_ = stored;
 }
 
 void AlpicoolBLEClient::loop() {
@@ -42,6 +46,7 @@ void AlpicoolBLEClient::loop() {
       (millis() - this->bind_start_ms_) > 20000) {
     ESP_LOGW(TAG, "BIND timed out — some models skip binding, continuing anyway");
     this->was_previously_bound_ = true;
+    this->bound_pref_.save(&this->was_previously_bound_);
     this->send_query_packet_();
     this->state_ = AlpicoolState::READY;
   }
@@ -283,12 +288,14 @@ void AlpicoolBLEClient::try_parse_buffer_() {
         if (this->state_ == AlpicoolState::BINDING) {
           this->state_ = AlpicoolState::READY;
           this->was_previously_bound_ = true;
+          this->bound_pref_.save(&this->was_previously_bound_);
         }
       }
     } else if (cmd == CMD_BIND) {
       ESP_LOGD(TAG, "BIND echo received");
       if (this->state_ == AlpicoolState::BINDING) {
         this->was_previously_bound_ = true;
+        this->bound_pref_.save(&this->was_previously_bound_);
         this->send_query_packet_();
         this->state_ = AlpicoolState::READY;
       }
