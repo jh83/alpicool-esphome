@@ -9,7 +9,7 @@ DEPENDENCIES = ["alpicool_ble"]
 AlpicoolNumber = alpicool_ble_ns.class_(
     "AlpicoolNumber", number.Number, cg.Component
 )
-AlpicoolNumberType = alpicool_ble_ns.enum("AlpicoolNumberType")
+AlpicoolNumberType = alpicool_ble_ns.enum("AlpicoolNumberType", is_class=True)
 
 NUMBER_TYPES = {
     "hysteresis": {

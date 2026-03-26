@@ -19,7 +19,7 @@ DEPENDENCIES = ["alpicool_ble"]
 AlpicoolSensor = alpicool_ble_ns.class_(
     "AlpicoolSensor", sensor.Sensor, cg.Component
 )
-AlpicoolSensorType = alpicool_ble_ns.enum("AlpicoolSensorType")
+AlpicoolSensorType = alpicool_ble_ns.enum("AlpicoolSensorType", is_class=True)
 
 SENSOR_TYPES = {
     "battery_percent": {
