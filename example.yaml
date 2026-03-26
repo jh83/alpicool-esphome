@@ -1,0 +1,122 @@
+# Example ESPHome configuration for Alpicool BLE fridge
+#
+# Steps:
+# 1. Find your fridge's Bluetooth MAC address using a BLE scanner app
+#    (e.g., nRF Connect, LightBlue) or from your HA HACS integration logs.
+# 2. Replace AA:BB:CC:DD:EE:FF with your fridge's MAC address.
+# 3. Flash to an ESP32 board.
+#
+# The ESP32 will connect to the fridge over BLE and expose all entities
+# to Home Assistant via the ESPHome native API — no HACS needed.
+
+substitutions:
+  device_name: alpicool-fridge
+  fridge_mac: "AA:BB:CC:DD:EE:FF"  # <-- CHANGE THIS
+
+esphome:
+  name: ${device_name}
+  friendly_name: Alpicool Fridge
+
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf  # ESP-IDF is required for BLE client
+
+# ESPHome logger
+logger:
+  level: DEBUG  # Set to INFO once working
+
+# Home Assistant API
+api:
+  encryption:
+    key: !secret api_encryption_key
+
+ota:
+  - platform: esphome
+    password: !secret ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: "${device_name} Fallback"
+    password: !secret fallback_password
+
+captive_portal:
+
+# Load the Alpicool BLE external component from this repository
+external_components:
+  - source:
+      type: git
+      url: https://github.com/yourhandle/alpicool-esphome  # <-- Update with your repo URL
+      ref: main
+    components: [alpicool_ble]
+
+# BLE client — manages the physical Bluetooth connection to the fridge
+ble_client:
+  - mac_address: ${fridge_mac}
+    id: fridge_ble_client
+
+# Alpicool BLE hub — handles the Alpicool protocol on top of the BLE connection
+alpicool_ble:
+  id: my_fridge
+  ble_client_id: fridge_ble_client
+  update_interval: 30s  # How often to poll the fridge for status
+
+# ─── Climate ──────────────────────────────────────────────────────────────────
+# Controls power, target temperature, and mode (Max/Eco)
+climate:
+  - platform: alpicool_ble
+    alpicool_id: my_fridge
+    name: "Fridge"
+    zone: left  # Use "right" for the second zone on dual-zone models
+
+# ─── Sensors ──────────────────────────────────────────────────────────────────
+sensor:
+  - platform: alpicool_ble
+    alpicool_id: my_fridge
+    name: "Fridge Battery"
+    type: battery_percent
+
+  - platform: alpicool_ble
+    alpicool_id: my_fridge
+    name: "Fridge Battery Voltage"
+    type: battery_voltage
+
+  - platform: alpicool_ble
+    alpicool_id: my_fridge
+    name: "Fridge Current Temperature"
+    type: left_current_temperature
+
+  # Uncomment for dual-zone models:
+  # - platform: alpicool_ble
+  #   alpicool_id: my_fridge
+  #   name: "Fridge Right Zone Temperature"
+  #   type: right_current_temperature
+
+# ─── Switch ───────────────────────────────────────────────────────────────────
+# Locks/unlocks the fridge's physical control panel
+switch:
+  - platform: alpicool_ble
+    alpicool_id: my_fridge
+    name: "Fridge Panel Lock"
+
+# ─── Numbers ──────────────────────────────────────────────────────────────────
+# Advanced settings — usually set once and left alone
+number:
+  - platform: alpicool_ble
+    alpicool_id: my_fridge
+    name: "Fridge Hysteresis"
+    type: hysteresis
+
+  - platform: alpicool_ble
+    alpicool_id: my_fridge
+    name: "Fridge Compressor Start Delay"
+    type: start_delay
+
+# ─── Select ───────────────────────────────────────────────────────────────────
+# Battery protection level: Low / Medium / High
+select:
+  - platform: alpicool_ble
+    alpicool_id: my_fridge
+    name: "Fridge Battery Saver"
