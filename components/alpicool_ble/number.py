@@ -50,8 +50,8 @@ async def to_code(config):
         min_value=type_info["min"],
         max_value=type_info["max"],
         step=type_info["step"],
-        mode=type_info["mode"],
     )
+    cg.add(var.set_mode(type_info["mode"]))
 
     hub = await cg.get_variable(config[CONF_ALPICOOL_ID])
     cg.add(var.set_hub(hub))
