@@ -57,7 +57,7 @@ Reference this repository as an external component:
 external_components:
   - source:
       type: git
-      url: https://github.com/yourhandle/alpicool-esphome
+      url: https://github.com/jh83/alpicool-esphome
       ref: main
     components: [alpicool_ble]
 ```
@@ -263,7 +263,7 @@ The checksum is the 16-bit sum of all preceding bytes. Temperature values are si
 
 **No connection / entities never appear**
 - Confirm the MAC address is correct
-- Make sure you're using `framework: type: esp-idf` — the Arduino framework does not support BLE client
+- Make sure you're using `framework: type: esp-idf`, if BLE errors are logged try changing `esp-idf` to `arduino` to see if the BLE errors dissapear.
 - ESP32 can only connect to one BLE device at a time as a client
 
 **"Write characteristic 0x1235 not found"**
@@ -281,10 +281,7 @@ The checksum is the 16-bit sum of all preceding bytes. Temperature values are si
 ## Compatibility
 
 Tested/reported working with:
-- Alpicool T series (T30, T40, T50, T60)
-- Alpicool CF series
-- Iceco VL series
-- Bodega coolers
+- Only my fridge/freezer which is a dual unit running the Alpicool protocol.
 
 If your model is not listed but uses the same Alpicool app, it will likely work. Please open an issue to report compatibility.
 
