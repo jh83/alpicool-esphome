@@ -48,7 +48,7 @@ captive_portal:
 external_components:
   - source:
       type: git
-      url: https://github.com/yourhandle/alpicool-esphome  # <-- Update with your repo URL
+      url: https://github.com/jh83/alpicool-esphome
       ref: main
     components: [alpicool_ble]
 
